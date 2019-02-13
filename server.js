@@ -38,12 +38,14 @@ app.get('/cards', (req, res) => {
 
 app.post('/cards', (req, res) => {
   const newCard = req.body
-  const isNameEqual = user => user.title === newCard.title
-  let card = data.cards.find(isNameEqual)
+  const isTitleEqual = user => user.title === newCard.title
+  let card = data.cards.find(isTitleEqual)
   if (card) {
-    card = { ...card, ...newCard }
+    card = { ...card, ...newCard.content, ...newCard.tags }
   } else {
-    data.cards.push(newCard)
+    const newId = Math.random()
+    const newCardWithId = { ...newCard, id: newId }
+    data.cards.push(newCardWithId)
   }
   res.json(data)
 })
